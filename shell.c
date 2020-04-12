@@ -70,7 +70,6 @@
                     word = strtok(NULL, " ");
                     execl("/bin/cat", "cat", word, NULL);
  
-<<<<<<< HEAD
             }
             else if(strcmp(word,"wc")==0){
                  word = strtok(NULL, " ");
@@ -79,24 +78,8 @@
                  execlp("wc","wc",file1,word,NULL);
                
             }
+
             else if(strcmp(word,"cp")==0){
-                printf("hi");
-                word=strtok(NULL, " ");
-                //printf("%s",word);
-                 strcpy(file1,word);
-                 word=strtok(NULL, " ");
-                //  printf("%s",nw);
-                //  strcpy(file2,word);
-                //file2=strtok(NULL, " ");
-                execl("/bin/cp", "cp", file1,word, NULL);
-            }
-=======
-                }
->>>>>>> 13f3d0b43bb7ed24555371b9cfd20d3948c3050d
-
-
-
-                else if(strcmp(word,"cp")==0){
 
 
                     word=strtok(NULL, " ");
@@ -109,7 +92,7 @@
                 }
 
 
-                else if(strcmp(word,"sort")==0){
+            else if(strcmp(word,"sort")==0){
                     word=strtok(NULL, " ");
                     if (strcmp(word,"-r")==0){
                         word=strtok(NULL, " ");
@@ -124,12 +107,6 @@
             }
 
 
-// else if(strcmp(word,"wc")==0){
-
-//     word=strtok(NULL, " ");
-//  execlp("wc","wc",word,NULL);
-
-// }
 
 
 
