@@ -81,7 +81,9 @@ else if(strcmp(word,"cat")==0)
 
 
 else if(strcmp(word,"cp")==0){
-    printf("hi");
+    // printf("hi");
+    // printf("hi");
+
     word=strtok(NULL, " ");
     //printf("%s",word);
     strcpy(file1,word);
@@ -92,6 +94,36 @@ else if(strcmp(word,"cp")==0){
       execl("/bin/cp", "cp", file1,word, NULL);
 }
 
+
+else if(strcmp(word,"sort")==0){
+word=strtok(NULL, " ");
+if (strcmp(word,"-r")==0){
+word=strtok(NULL, " ");
+execlp("sort","sort","-r", word,NULL);
+
+}
+else
+{
+    execlp("sort","sort",word,NULL);
+}
+
+}
+
+
+// else if(strcmp(word,"wc")==0){
+
+//     word=strtok(NULL, " ");
+//  execlp("wc","wc",word,NULL);
+
+// }
+
+
+
+else if(strcmp(word,"man")==0){
+     word=strtok(NULL, " ");
+     if((strcmp(word,"pwd")==0)||(strcmp(word,"cd")==0)||(strcmp(word,"cat")==0)||(strcmp(word,"nano")==0)||(strcmp(word,"wc")==0)||(strcmp(word,"man")==0)||(strcmp(word,"cp")==0)||(strcmp(word,"sort")==0||(strcmp(word,"grep")==0)))
+     execlp("man","man", word,NULL);
+}
 else if(strcmp(cmdLine, "exit") == 0){
 
     kill(0,1);
