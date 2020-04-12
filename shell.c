@@ -73,10 +73,10 @@
             }
             else if(strcmp(word,"wc")==0){
                  word = strtok(NULL, " ");
-                 printf("%s",word);
-                  execlp("ls","ls",NULL);
-                  execlp("wc","text.txt",NULL);
-                 execl("/bin/wc","wc","text.txt",NULL);
+                 strcpy(file1,word);
+                 word = strtok(NULL, " ");
+                 execlp("wc","wc",file1,word,NULL);
+               
             }
             else if(strcmp(word,"cp")==0){
                 printf("hi");
