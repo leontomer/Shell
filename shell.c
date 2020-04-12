@@ -32,44 +32,45 @@
               char * word=strtok(cpyCmd, " ");
   
               //printf("%s",word);
-            if (strcmp(cmdLine, "pwd") == 0) {
+                if (strcmp(cmdLine, "pwd") == 0) {
         
-                char* av[]={"pwd",NULL};
-                execvp("pwd",av);}
+                    char* av[]={"pwd",NULL};
+                    execvp("pwd",av);}
        
-            else if(strcmp(word,"cd")==0) {
+                else if(strcmp(word,"cd")==0) {
                     //printf("%s",cmdLine);
                     //        char* word = strtok(cmdLine, " ");
-                word = strtok(NULL, " ");
-                // printf("%s",cmdLine);
-                //printf("%s",word);
-                chdir(word);
-                // exit(0);
-            }
-            else if(strcmp(word,"nano")==0){
-                 // char* word = strtok(cmdLine, " ");
-                word=  strtok(NULL, " ");
-                //  printf("%s",cmdLine);
-                creat(word,  0644);
-                //printf("%s",strtok(cmdLine,"nano ")); 
-                //printf("%s", cmdLine);
-            }
-            else if(strstr(cmdLine,"cat >")){
-                //char* word = strtok(cmdLine, " ");
-                 word = strtok(NULL, " ");
-                 word = strtok(NULL, " ");
-                //printf("%s",word);
-                creat(word,  0644);  
-                // printf("%s",strtok(cmdLine,"cat > ")); 
-                //printf("%s", cmdLine);
-            }
-            else if(strcmp(word,"cat")==0)
-            {
+                    word = strtok(NULL, " ");
+                    // printf("%s",cmdLine);
+                    //printf("%s",word);
+                    chdir(word);
+                    // exit(0);
+                    }
+                else if(strcmp(word,"nano")==0){
+                     // char* word = strtok(cmdLine, " ");
+                    word=  strtok(NULL, " ");
+                    //  printf("%s",cmdLine);
+                     creat(word,  0644);
+                    //printf("%s",strtok(cmdLine,"nano ")); 
+                    //printf("%s", cmdLine);
+                 }
+                else if(strstr(cmdLine,"cat >")){
+                    //char* word = strtok(cmdLine, " ");
+                    word = strtok(NULL, " ");
+                    word = strtok(NULL, " ");
+                    //printf("%s",word);
+                    creat(word,  0644);  
+                    // printf("%s",strtok(cmdLine,"cat > ")); 
+                    //printf("%s", cmdLine);
+                }
+                else if(strcmp(word,"cat")==0)
+                {
 
-                //char* word = strtok(cmdLine, " ");
-                word = strtok(NULL, " ");
-                execl("/bin/cat", "cat", word, NULL);
+                    //char* word = strtok(cmdLine, " ");
+                    word = strtok(NULL, " ");
+                    execl("/bin/cat", "cat", word, NULL);
  
+<<<<<<< HEAD
             }
             else if(strcmp(word,"wc")==0){
                  word = strtok(NULL, " ");
@@ -89,24 +90,70 @@
                 //file2=strtok(NULL, " ");
                 execl("/bin/cp", "cp", file1,word, NULL);
             }
+=======
+                }
+>>>>>>> 13f3d0b43bb7ed24555371b9cfd20d3948c3050d
 
-            else if(strcmp(cmdLine, "exit") == 0){
 
-                kill(0,1);
+
+                else if(strcmp(word,"cp")==0){
+
+
+                    word=strtok(NULL, " ");
+                    strcpy(file1,word);
+                    word=strtok(NULL, " ");
+                    //  printf("%s",nw);
+                    //  strcpy(file2,word);
+                    //file2=strtok(NULL, " ");
+                    execl("/bin/cp", "cp", file1,word, NULL);
+                }
+
+
+                else if(strcmp(word,"sort")==0){
+                    word=strtok(NULL, " ");
+                    if (strcmp(word,"-r")==0){
+                        word=strtok(NULL, " ");
+                        execlp("sort","sort","-r", word,NULL);
+
+                    }
+                    else
+                    {
+                        execlp("sort","sort",word,NULL);
+                    }
+
             }
 
-            else{
-                printf("\'%s\' command is not supported\n",cmdLine);
-                exit(0);
-            }
-     }
-    
-    else{
-        waitpid(childPid);
+
+// else if(strcmp(word,"wc")==0){
+
+//     word=strtok(NULL, " ");
+//  execlp("wc","wc",word,NULL);
+
+// }
+
+
+
+                else if(strcmp(word,"man")==0){
+                    word=strtok(NULL, " ");
+                    if((strcmp(word,"pwd")==0)||(strcmp(word,"cd")==0)||(strcmp(word,"cat")==0)||(strcmp(word,"nano")==0)||(strcmp(word,"wc")==0)||(strcmp(word,"man")==0)||(strcmp(word,"cp")==0)||(strcmp(word,"sort")==0||(strcmp(word,"grep")==0)))
+                        execlp("man","man", word,NULL);
+                }
+            
+                else if(strcmp(cmdLine, "exit") == 0){
+
+                    kill(0,1);
+                }
+
+                else{
+                    printf("\'%s\' command is not supported\n",cmdLine);
+                    exit(0);
+                }
     }
+        else
+        {
+            waitpid(childPid);
+        }
+            }
 
-
-
-  }
  return 0;
  }
