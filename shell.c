@@ -26,7 +26,7 @@
               char * word=strtok(cpyCmd, " ");
   
 
-                if (strcmp(cmdLine, "pwd") == 0) {
+                if (strcmp(word, "pwd") == 0) {
         
                     char* av[]={"pwd",NULL};
                     execvp("pwd",av);}
@@ -102,13 +102,13 @@
                         execlp("man","man", word,NULL);
                 }
             
-                else if(strcmp(cmdLine, "exit") == 0){
+                else if(strcmp(word, "exit") == 0){
 
                     kill(0,1);
                 }
 
                 else{
-                    printf("\'%s\' command is not supported\n",cmdLine);
+                    printf("\'%s\' command is not supported\n",word);
                     exit(0);
                 }
     }
