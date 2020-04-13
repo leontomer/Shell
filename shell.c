@@ -11,7 +11,7 @@
     int childPid;
     char * cmdLine;
     char *info;
-
+    FILE *f;
     char file1[256];
      while (1){
             printf("\nENTER YOUR COMMAND: \n");
@@ -45,13 +45,23 @@
                     }
                 else if(strcmp(word,"nano")==0){
                     word=  strtok(NULL, " ");
-                     creat(word,  0644);
+                     execlp("nano","nano",word,NULL);
                  }
                 else if(strstr(cmdLine,"cat >")){
                     word = strtok(NULL, " ");
                     word = strtok(NULL, " ");
-                    creat(word,  0644);  
+                   f = fopen(word, "w");
+                   if(!f){
+                       creat(word,0644);
+                       f = fopen(word, "w");
+                   }
+                   while (fgets(file1, 1000, stdin) != NULL) {
+                        fputs(file1,f);
+                   }
+
+                   fclose(f);
                 }
+
             else if(strcmp(word,"cat")==0)
                 {
                     word = strtok(NULL, " ");
