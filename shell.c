@@ -47,8 +47,9 @@
                     word=  strtok(NULL, " ");
                      execlp("nano","nano",word,NULL);
                  }
-                else if(strstr(cmdLine,"cat >")){
+                else if(strcmp(word,"cat")==0){
                     word = strtok(NULL, " ");
+                    if(strcmp(word,">")==0){
                     word = strtok(NULL, " ");
                    f = fopen(word, "w");
                    if(!f){
@@ -61,12 +62,12 @@
 
                    fclose(f);
                 }
-
-            else if(strcmp(word,"cat")==0)
-                {
-                    word = strtok(NULL, " ");
+                else{
                     execl("/bin/cat", "cat", word, NULL);
-            }
+                }
+                }
+
+
             else if(strcmp(word,"wc")==0){
                  word = strtok(NULL, " ");
                  strcpy(file1,word);
