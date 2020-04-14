@@ -4,6 +4,12 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <fcntl.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+
  void executeWord(char * word,FILE* f,char* file1){
         if (strcmp(word, "pwd") == 0) {
                 char* av[]={"pwd",NULL};
@@ -94,10 +100,18 @@
 
  }
  int checkIfNeedPipe(char* word){
+     int pipeCount=0;
      for(int i=0;word[i]!=0;i++){
          if(word[i]=='|'){
-             return 1;
+             pipeCount++;
          }
+     }
+     if(pipeCount>1){
+         printf("Multiple pipes are not supported\n");
+         exit(0);
+     }
+     else if(pipeCount==1){
+         return 1;
      }
      return 0;
  }
@@ -149,6 +163,7 @@
     char * cmdLine;
     char *info;
     FILE *f;
+    int status;
     char file1[256];
      while (1){
             printf("\nENTER YOUR COMMAND: \n");
@@ -168,7 +183,7 @@
          }
 
         else{
-            waitpid(childPid);
+            waitpid(childPid,&status,0);
         }
     }
 
