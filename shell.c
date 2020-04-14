@@ -29,13 +29,32 @@
 
         else if(strcmp(word,"grep")==0) {
                  word = strtok(NULL, " ");
-                 strcpy(file1,word);
+                 if(strcmp(word,"-c")==0){
+                 
                  word = strtok(NULL, " ");
-                 if(execlp("grep","grep",file1,word,NULL)==-1){
-                     printf("failed grep\n");
-                 };
-            }
-
+                 strcpy(file1,word);
+                 
+                 word=strtok(NULL, " ");
+                 //if(word){
+                 if(execlp("grep","grep","-c",file1,word,NULL)==-1){
+                     printf("failed grep\n");}}
+                    else {
+                                         
+                 //word = strtok(NULL, " ");
+                 strcpy(file1,word);
+                 
+                 word=strtok(NULL, " ");
+                                  if(execlp("grep","grep",file1,word,NULL)==-1){
+                     printf("failed grep\n");}}
+                    }
+                //  else
+                //  {
+                //     if(execlp("grep","grep",file1,file2,NULL)==-1){
+                //      printf("failed grep\n");
+                //  }
+                 
+                 
+   
         else if(strcmp(word,"nano")==0){
                  word=  strtok(NULL, " ");
                 execlp("nano","nano",word,NULL);
@@ -95,8 +114,19 @@
 
         else if(strcmp(word,"man")==0){
                  word=strtok(NULL, " ");
-                    if((strcmp(word,"pwd")==0)||(strcmp(word,"cd")==0)||(strcmp(word,"cat")==0)||(strcmp(word,"nano")==0)||(strcmp(word,"wc")==0)||(strcmp(word,"man")==0)||(strcmp(word,"cp")==0)||(strcmp(word,"sort")==0||(strcmp(word,"grep")==0)))
-                        execlp("man","man", word,NULL);
+                 strcpy(file1,word);
+                 word=strtok(NULL, " ");
+                 if(!word)
+                    if((strcmp(file1,"pwd")==0)||(strcmp(file1,"cat")==0)||(strcmp(file1,"nano")==0)||(strcmp(file1,"wc")==0)||(strcmp(file1,"man")==0)||(strcmp(file1,"cp")==0)||(strcmp(file1,"sort")==0||(strcmp(file1,"grep")==0)))
+                        execlp("man","man", file1,NULL);
+                    else{
+                        printf("command \'man %s\' is not supported\n",file1);
+                        exit(0); 
+                    }
+                else{
+                        printf("man command should only receive one argument\n");
+                        exit(0); 
+                }
         } 
 
         else if(strcmp(word, "exit") == 0){
@@ -126,7 +156,7 @@
      return 0;
  }
 
- void handlePipe(char * cmdLine,FILE* f,char* file1){
+ void handlePipe(char * cmdLine,FILE* f,char* file1 ){
     char* firstCommand,*secondCommand;
     firstCommand=strtok_r(cmdLine,"|",&secondCommand);
     secondCommand=strtok(secondCommand, " ");
@@ -175,6 +205,7 @@
     FILE *f;
     int status;
     char file1[256];
+    
      while (1){
             printf("\nENTER YOUR COMMAND: \n");
             cmdLine= readline(">"); 
