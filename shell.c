@@ -12,8 +12,14 @@
 
  void executeWord(char * word,FILE* f,char* file1){
         if (strcmp(word, "pwd") == 0) {
-                char* av[]={"pwd",NULL};
-                execvp("pwd",av);
+                word=strtok(NULL," ");
+                if(!word)
+                    execlp("pwd","pwd",NULL);
+                else
+                {
+                    printf("pwd should not receive any parameters/options\n");
+                    exit(0); 
+                }
             }
        
         else if(strcmp(word,"cd")==0) {
