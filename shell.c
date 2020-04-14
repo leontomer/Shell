@@ -16,11 +16,12 @@
             }
 
         else if(strcmp(word,"grep")==0) {
-                 printf("entered here\n");
                  word = strtok(NULL, " ");
                  strcpy(file1,word);
                  word = strtok(NULL, " ");
-                 execlp("grep","grep",file1,word,NULL);
+                 if(execlp("grep","grep",file1,word,NULL)==-1){
+                     printf("failed grep\n");
+                 };
             }
 
         else if(strcmp(word,"nano")==0){
@@ -51,7 +52,9 @@
                  word = strtok(NULL, " ");
                  strcpy(file1,word);
                  word = strtok(NULL, " ");
-                 execlp("wc","wc",file1,word,NULL);
+                 if(execlp("wc","wc",file1,word,NULL)==-1){
+                     printf("error\n");
+                 };
                
             }
 
@@ -68,12 +71,8 @@
                 word=strtok(NULL, " ");
                 execlp("sort","sort","-r", word,NULL);
                 }
-             else if(!strstr(word,"-")){
+             else{
                 execlp("sort","sort",word,NULL);
-            }
-            else{
-            printf("option \'%s\' is not supported\n",word);
-            exit(0); 
             }
 
         }
@@ -96,14 +95,53 @@
  }
  int checkIfNeedPipe(char* word){
      for(int i=0;word[i]!=0;i++){
-         printf("%c\n",word[i]);
          if(word[i]=='|'){
-             printf("matched!\n");
              return 1;
          }
      }
      return 0;
  }
+
+ void handlePipe(char * cmdLine,FILE* f,char* file1){
+    char* firstCommand,*secondCommand;
+    firstCommand=strtok_r(cmdLine,"|",&secondCommand);
+    secondCommand=strtok(secondCommand, " ");
+    firstCommand=strtok(firstCommand, " ");
+    pid_t pid;
+    int fd[2];
+
+    pipe(fd);
+    pid=fork();
+    if(pid==-1){
+        printf("fork failed\n");
+        exit(1);
+    }
+    if(pid==0){
+        dup2(fd[1],STDOUT_FILENO);
+        close(fd[0]);
+        close(fd[1]);
+        executeWord(firstCommand,f,file1);
+    }
+    else{
+        pid=fork();
+        if(pid==-1){
+            printf("fork failed\n");
+        }
+        if(pid==0){
+            dup2(fd[0],STDIN_FILENO);
+            close(fd[1]);
+            close(fd[0]);
+            executeWord(secondCommand,f,file1);
+        }
+        else{
+            int status;
+            close(fd[0]);
+            close(fd[1]);
+            waitpid(pid,&status,0);
+        }
+    }
+ }
+
  int main (int argc, char **argv)
  {
      
@@ -121,9 +159,12 @@
               strcpy(cpyCmd,cmdLine);
               char * word=strtok(cpyCmd, " ");
               if(checkIfNeedPipe(cmdLine)){
-                  printf("has |\n");
+                  handlePipe(cmdLine,f,file1);
               }
-              executeWord(word,f,file1);   
+              else{
+                executeWord(word,f,file1);  
+              }
+         
          }
 
         else{
