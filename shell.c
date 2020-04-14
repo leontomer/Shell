@@ -130,7 +130,7 @@
         } 
 
         else if(strcmp(word, "exit") == 0){
-                 kill(0,1);
+                exit(1);
         }
 
         else{
@@ -225,6 +225,8 @@
 
         else{
             waitpid(childPid,&status,0);
+            if (status == 256)
+            return 0;
         }
     }
 
