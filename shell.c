@@ -77,8 +77,12 @@
                 word=strtok(NULL, " ");
                 execlp("sort","sort","-r", word,NULL);
                 }
-             else{
+               else if(!strstr(word,"-")){
                 execlp("sort","sort",word,NULL);
+            }
+                        else{
+            printf("option \'%s\' is not supported\n",word);
+            exit(0); 
             }
 
         }
