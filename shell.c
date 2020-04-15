@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -30,30 +29,19 @@
         else if(strcmp(word,"grep")==0) {
                  word = strtok(NULL, " ");
                  if(strcmp(word,"-c")==0){
-                 
                  word = strtok(NULL, " ");
                  strcpy(file1,word);
-                 
                  word=strtok(NULL, " ");
-                 //if(word){
                  if(execlp("grep","grep","-c",file1,word,NULL)==-1){
                      printf("failed grep\n");}}
-                    else {
-                                         
-                 //word = strtok(NULL, " ");
+                    else {                
                  strcpy(file1,word);
                  
                  word=strtok(NULL, " ");
                                   if(execlp("grep","grep",file1,word,NULL)==-1){
                      printf("failed grep\n");}}
                     }
-                //  else
-                //  {
-                //     if(execlp("grep","grep",file1,file2,NULL)==-1){
-                //      printf("failed grep\n");
-                //  }
-                 
-                 
+                      
    
         else if(strcmp(word,"nano")==0){
                  word=  strtok(NULL, " ");
@@ -81,9 +69,8 @@
 
         else if(strcmp(word,"wc")==0){
                  word = strtok(NULL, " ");
-                 strcpy(file1,word);
-                 word = strtok(NULL, " ");
-                 if(execlp("wc","wc",file1,word,NULL)==-1){
+                 file1 = strtok(NULL, " ");
+                 if(execlp("wc","wc",word,file1,NULL)==-1){
                      printf("error\n");
                  };
                
@@ -98,18 +85,8 @@
 
         else if(strcmp(word,"sort")==0){
              word=strtok(NULL, " ");
-             if (strcmp(word,"-r")==0){
-                word=strtok(NULL, " ");
-                execlp("sort","sort","-r", word,NULL);
-                }
-               else if(!strstr(word,"-")){
-                execlp("sort","sort",word,NULL);
-            }
-                        else{
-            printf("option \'%s\' is not supported\n",word);
-            exit(0); 
-            }
-
+             file1=strtok(NULL, " ");
+             execlp("sort","sort",word,file1,NULL);
         }
 
         else if(strcmp(word,"man")==0){
@@ -130,7 +107,6 @@
         } 
 
         else if(strcmp(word, "exit") == 0){
-                //exit(1);
                 kill(0,1);
         }
 
@@ -160,7 +136,6 @@
  void handlePipe(char * cmdLine,FILE* f,char* file1 ){
     char* firstCommand,*secondCommand;
     firstCommand=strtok_r(cmdLine,"|",&secondCommand);
-    secondCommand=strtok(secondCommand, " ");
     firstCommand=strtok(firstCommand, " ");
     pid_t pid;
     int fd[2];
@@ -186,6 +161,7 @@
             dup2(fd[0],STDIN_FILENO);
             close(fd[1]);
             close(fd[0]);
+            secondCommand=strtok(secondCommand, " ");
             executeWord(secondCommand,f,file1);
         }
         else{
