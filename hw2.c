@@ -202,8 +202,6 @@
 
         else{
             waitpid(childPid,&status,0);
-            // if (status == 256)
-            // return 0;
         }
     }
 
